@@ -434,8 +434,12 @@ function getNumberValue(number) {
  * 5        => true
  * '5'      => false
  */
-function isNumber(/* number */) {
-  throw new Error('Not implemented');
+function isNumber(number) {
+  return (
+    !Number.isNaN(parseFloat(number)) &&
+    !Number.isNaN(number - 0) &&
+    Number.isFinite(number)
+  );
 }
 
 /**
@@ -449,8 +453,11 @@ function isNumber(/* number */) {
  * 5.1  => false
  * '5'  => false
  */
-function isInteger(/* number */) {
-  throw new Error('Not implemented');
+function isInteger(number) {
+  if (!Number.isInteger(number)) {
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -463,8 +470,9 @@ function isInteger(/* number */) {
  * '4.567abcdefgh' => 4.567
  * 'abcdefgh'      => NaN
  */
-function getFloatOnString(/* str */) {
-  throw new Error('Not implemented');
+function getFloatOnString(str) {
+  const result = parseFloat(str);
+  return Number.isNaN(result) ? NaN : result;
 }
 
 /**
@@ -481,8 +489,17 @@ function getFloatOnString(/* str */) {
  * '1.234', 2           => 1
  * '10', 8              => 8
  */
-function getIntegerOnString(/* str, base */) {
-  throw new Error('Not implemented');
+function getIntegerOnString(str, base) {
+  const parsed = parseInt(str, base);
+
+  if (
+    Number.isNaN(parsed) ||
+    parsed.toString(base) !== str.split(/[^A-Za-z0-9]/)[0].toString(base)
+  ) {
+    return NaN;
+  }
+
+  return parsed;
 }
 
 /**
@@ -496,8 +513,11 @@ function getIntegerOnString(/* str, base */) {
  * 3.5      => false
  * 2 ** 53  => false
  */
-function isSafeInteger(/* number */) {
-  throw new Error('Not implemented');
+function isSafeInteger(number) {
+  if (!Number.isSafeInteger(number)) {
+    return false;
+  }
+  return number;
 }
 
 /**
